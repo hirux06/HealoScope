@@ -1,14 +1,31 @@
 import Post from "../models/postModel.js";
+import User from "../models/userModel.js";
 
 
 const postController = {
-    getAllPost: async (req, res) => {
-        try{
-            const posts = Post.find({});
+    createPost: async (req, res) => {
+        const { id: _id, title, tags , body } = req.body;
+        try {
+            const user = User.findOne({ id });
 
-            return res.status(200).json({message: "All Posts retrieved successfully", posts});
-        }catch(error){
-            return res.status(500).json({ message: "Something went wrong", error: error.message });
+            if (!user) {
+                return res.status(400).json({ message: "User not found!!" });
+            }
+
+            if (user.role !== "doctor") {
+                return res.status(403).json({ message: "Only doctors can create posts" });
+            }
+
+            const newPost = new Post({
+                id, 
+                title,
+                body,
+                tags
+            });
+            await newPost.save();
+                res.status(201).json({ message: "Post created successfully", post: newPost, user });
+        } catch (error) {
+            res.status(500).json({ message: "Error creating post", error: error.message });
         }
     }
 };

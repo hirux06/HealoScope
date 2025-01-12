@@ -8,6 +8,10 @@ const PostSchema = mongoose.Schema({
         ref: "User",
         required: true,
     },
+    title: {
+        type: String,
+        required: true
+    },
     body: {
         type: String,
         required: true,
@@ -17,7 +21,7 @@ const PostSchema = mongoose.Schema({
         ref: "User",
     }],
     tags: [{
-        type: String,
+        type: [String],
     }],
     media: {
         type: String,
