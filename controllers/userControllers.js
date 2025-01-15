@@ -44,13 +44,14 @@ const userController = {
             res.status(500).json({ message: 'Something went wrong', error: error.message });
         }
     },
+
     login: async (req, res) => {
         const {username, email, password} = req.body;
 
         try {
             // Finding whether the user already exists or not
             const user = await User.findOne({email});
-            console.log(user);
+
 
             if(!user){
                 return res.status(400).json({message : "User does not exists. Kindly login"});
@@ -94,11 +95,16 @@ const userController = {
         }
     },
 
-    getAllUser: async (req, res) => {
-        const {_id} = req.body;
+    getUserProfile: async (req, res) => {
+        const {id} = req.params;
 
-        console.log(_id);
-    }
+        try {
+            const users = await User.findById(id);
+            res.status(200).json({ message: "User fetched successfully", users });
+        } catch (error) {
+            res.status(500).json({ message: "Error fetching users", error: error.message });
+        }
+    },
 };
 
 export default userController;

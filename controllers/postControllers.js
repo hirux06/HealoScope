@@ -72,7 +72,7 @@ const postController = {
 
             const updatedPost = await post.save();
 
-            console.log(updatedPost);
+            
             res.status(200).json({ message: "Post updated successfully", updatedPost });
             } catch (error) {
                 res.status(500).json({ message: "Error updating post", error: error.message });
