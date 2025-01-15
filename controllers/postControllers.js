@@ -1,6 +1,7 @@
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
 import moment from "moment-timezone";
+import mongoose from "mongoose";
 
 
 const postController = {
@@ -93,6 +94,34 @@ const postController = {
             res.status(200).json({ message: "Post deleted successfully" });
         } catch (error) {
             res.status(500).json({ message: "Error updating post", error: error.message });
+        }
+    },
+
+    likeOrUnlikePost: async (req, res) => {
+        const { id } = req.params;  
+        const {userId} = req.body;  
+        try {
+            const post = await Post.findById(id);
+            
+            if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+            }
+
+            const isLiked = post.likes.some(like => like.toString() === userId.toString());
+
+            if (isLiked) {
+              
+              post.likes = post.likes.filter(like => like.toString() !== userId.toString());
+            } else {
+              
+              post.likes.push(new mongoose.Types.ObjectId(userId));  
+            }
+            await post.save();
+
+            return res.status(200).json({ message: "Post updated successfully", post });
+        } catch (error) {
+            console.error("Error liking/unliking post:", error.message);
+            return res.status(500).json({ message: "Internal Server Error" });
         }
     }
 };
