@@ -1,7 +1,7 @@
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
 import moment from "moment-timezone";
-import mongoose from "mongoose";
+import mongoose from "mongoose"; 
 
 
 const postController = {

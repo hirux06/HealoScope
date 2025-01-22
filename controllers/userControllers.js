@@ -2,7 +2,7 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import sendEmail from "../utils/emailSender.js";
+import sendEmail from "../utils/emailSender.js";  
 
 const userController = {
     registerUser: async (req, res) => {
