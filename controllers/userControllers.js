@@ -127,78 +127,31 @@ const userController = {
         }
     },
 
-    followProfile: async (req, res) => {
-        const { id } = req.params; 
-        const { userId } = req.body; 
-        
-        try {
-          const userToFollow = await User.findById(id);
-          const currentUser = await User.findById(userId);
-      
-          if (!userToFollow || !currentUser) {
-            return res.status(404).json({ message: "User not found" });
-          }
-      
-          
-          
-      
-          
-          userToFollow.followers += 1;
-          currentUser.following += 1;
-      
-          await userToFollow.save();
-          await currentUser.save();
-      
-          return res.status(200).json({
-            message: "Followed successfully",
-            followers: userToFollow.followers,
-            following: currentUser.following,
-          });
-        } catch (error) {
-          console.error("Error in followProfile:", error);
-          return res.status(500).json({ error: error.message });
-        }
-      },
-      
-      
+    deleteUser : async (req, res) => {
+      const userId = req.params.id;
     
-
-      unfollowProfile: async (req, res) => {
-        const { id } = req.params; 
-        const { userId } = req.body; 
-      
-        try {
-          const userToUnfollow = await User.findById(id);
-          const currentUser = await User.findById(userId);
-      
-          if (!userToUnfollow || !currentUser) {
-            return res.status(404).json({ message: "User not found" });
-          }
-      
-          
-          if (userToUnfollow.followers <= 0 || currentUser.following <= 0) {
-            return res.status(400).json({ message: "Invalid operation: counts are already zero" });
-          }
-      
-          
-          userToUnfollow.followers -= 1;
-          currentUser.following -= 1;
-      
-          await userToUnfollow.save();
-          await currentUser.save();
-      
-          return res.status(200).json({
-            message: "Unfollowed successfully",
-            followers: userToUnfollow.followers,
-            following: currentUser.following,
-          });
-        } catch (error) {
-          console.error("Error in unfollowProfile:", error);
-          return res.status(500).json({ error: error.message });
-        }
+      try {
+        
+        await Post.deleteMany({ userId });
+    
+        
+        await Comment.deleteMany({ userId });
+    
+        
+        await Like.deleteMany({ userId });
+    
+        
+        await Follow.deleteMany({ followerId: userId });
+        await Follow.deleteMany({ followingId: userId });
+    
+        
+        await User.findByIdAndDelete(userId);
+    
+        res.status(200).json({ message: "User and associated data deleted successfully" });
+      } catch (error) {
+        res.status(500).json({ error: "Failed to delete user and associated data" });
       }
-      
-      
+    }
 };
 
 export default userController;

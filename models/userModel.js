@@ -43,17 +43,21 @@ const UserSchema = new mongoose.Schema({
         },
     },
     followers: {
-        type: Number,
+        type: [mongoose.Schema.Types.ObjectId], 
+        ref: "User", 
         default: function () {
-            return this.role === "doctor" ? 0 : undefined;
+          return this.role === "doctor" ? [] : undefined; 
         },
     },
+
     following: {
-        type: Number,
+        type: [mongoose.Schema.Types.ObjectId], 
+        ref: "User", 
         default: function () {
-            return this.role === "doctor" ? 0 : undefined;
+          return this.role === "doctor" ? [] : undefined; 
         },
     },
+      
     postId: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
@@ -71,6 +75,22 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: () => moment().tz("Asia/Kolkata").format("DD-MM-YYYY HH:mm:ss"),
     },
+});
+
+
+
+UserSchema.pre("findOneAndDelete", async function (next) {
+    const userId = this.getQuery()._id;
+  
+    await mongoose.model("Post").deleteMany({ userId });
+  
+    await mongoose.model("Comment").deleteMany({ userId });
+  
+    await mongoose.model("Like").deleteMany({ userId });
+  
+    
+  
+    next();
 });
 
 const User = mongoose.model("User", UserSchema);

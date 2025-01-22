@@ -7,8 +7,8 @@ userRouter.post("/registerUser", userController.registerUser);
 userRouter.post("/login", userController.login);
 userRouter.get("/profile/:id", userController.getUserProfile);
 userRouter.put("/editProfile/:id", userController.editUserProfile);
-userRouter.put("/follow/:id", userController.followProfile);
-userRouter.put("/unfollow/:id", userController.unfollowProfile);
+
+userRouter.delete("/delete/:id", userController.deleteUser);
 
 
 
