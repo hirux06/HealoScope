@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        default: "default.jpg",
+        default: "https://res.cloudinary.com/dehlsuf9r/image/upload/v1737645526/healoscope-profile-pics/default_snczqp.jpg",
     },
     specialization: {
         type: String,
