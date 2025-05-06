@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import mainRouter from "./routes/mainRouter.js";
 
-const PORT = process.env.PORT | 8080;
+const PORT = process.env.PORT || 8080;
 const URI = process.env.MONGODB_URI;
 
 
