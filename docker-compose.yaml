@@ -7,6 +7,12 @@ services:
     environment:
       PORT: 8080
       MONGODB_URI: mongodb://mongo:27017/healoscope
+      JWT_SECRET: ${JWT_SECRET}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
+      CLOUDINARY_NAME: ${CLOUDINARY_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
       GEMINI_API_KEY: ${GEMINI_API_KEY}
     depends_on:
       mongo:
