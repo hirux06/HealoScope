@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: healoscope-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - MONGO_URI=mongodb://mongo:27017/healoscope
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+    restart: true
+
+  mongo:
+    image: mongo
+    container_name: healoscope-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: true
+
+volumes:
+  mongo_data:
