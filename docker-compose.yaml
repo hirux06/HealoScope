@@ -13,7 +13,7 @@ services:
       - mongo
     volumes:
       - .:/app
-    restart: true
+    restart: unless-stopped
 
   mongo:
     image: mongo
@@ -22,7 +22,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
-    restart: true
+    restart: unless-stopped
 
 volumes:
   mongo_data:
